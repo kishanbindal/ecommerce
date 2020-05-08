@@ -94,74 +94,74 @@ class TestOtpSubmissionFunctionality:
         otp, step = otp_service.generate_otp()
         url = reverse('login-otp')
         return otp, url, phone_number
-    #
-    # def test_check_user_does_not_exists(self, set_up):
-    #     otp, path, phone_number = set_up[0], set_up[1], set_up[2]
-    #     request = RequestFactory().post(path)
-    #     request.data = {
-    #         'otp': otp,
-    #         'phone_number': '+0011234567890'
-    #     }
-    #     response = views.LoginUser.post(self, request)
-    #     assert response.status_code == 400
-    #
-    # def test_user_exists(self, set_up):
-    #     otp, path, phone_number = set_up[0], set_up[1], set_up[2]
-    #     request = RequestFactory().post(path)
-    #     request.data = {
-    #         'otp': otp,
-    #         'phone_number': phone_number
-    #     }
-    #     response = views.LoginUser.post(self, request)
-    #     assert response.status_code == 200
-    #
-    # def test_wrong_otp_type(self, set_up):
-    #     path = reverse('login-otp')
-    #     request = RequestFactory().post(path)
-    #     request.data = {
-    #         'otp': 'kishan',
-    #         'phone_number': '+0911234567890'
-    #     }
-    #     response = views.LoginUser.post(self, request)
-    #     if type(request.data.get('otp')) != int:
-    #         assert response.status_code == 400
-    #
-    # def test_valid_otp_type(self, set_up):
-    #     path = reverse('login-otp')
-    #     request = RequestFactory().post(path)
-    #     request.data = {
-    #         'otp': 543175,
-    #         'phone_number': set_up[2]
-    #     }
-    #     response = views.LoginUser.post(self, request)
-    #     if type(request.data.get('otp')) is int:
-    #         assert response.status_code == 200
-    #
-    # def test_otp_invalid_length(self, set_up):
-    #     path = reverse('login-otp')
-    #     phone_number = set_up[2]
-    #     otp = 56734
-    #     request = RequestFactory().post(path)
-    #     request.data = {
-    #         'otp': otp,
-    #         'phone_number': phone_number
-    #     }
-    #     response = views.LoginUser.post(self, request)
-    #     if len(str(otp)) != 6:
-    #         assert response.status_code == 400
-    #
-    # def test_otp_length(self, set_up):
-    #     otp, path, phone_number = set_up
-    #     request = RequestFactory().post(path)
-    #     request.data = {
-    #         'otp': otp,
-    #         'phone_number': phone_number
-    #     }
-    #     response = views.LoginUser.post(self, request)
-    #     if len(str(otp)) == 6:
-    #         assert response.status_code == 200
 
-    def test_redis_cache(self, set_up):
+    def test_check_user_does_not_exists_return_400(self, set_up):
+        otp, path, phone_number = set_up[0], set_up[1], set_up[2]
+        request = RequestFactory().post(path)
+        request.data = {
+            'otp': otp,
+            'phone_number': '+0011234567890'
+        }
+        response = views.LoginUser.post(self, request)
+        assert response.status_code == 400
+
+    def test_user_exists_return_200(self, set_up):
+        otp, path, phone_number = set_up[0], set_up[1], set_up[2]
+        request = RequestFactory().post(path)
+        request.data = {
+            'otp': otp,
+            'phone_number': phone_number
+        }
+        response = views.LoginUser.post(self, request)
+        assert response.status_code == 200
+
+    def test_wrong_otp_type_return_400(self, set_up):
+        path = reverse('login-otp')
+        request = RequestFactory().post(path)
+        request.data = {
+            'otp': 'kishan',
+            'phone_number': '+0911234567890'
+        }
+        response = views.LoginUser.post(self, request)
+        if type(request.data.get('otp')) != int:
+            assert response.status_code == 400
+
+    def test_valid_otp_type_return_200(self, set_up):
+        path = reverse('login-otp')
+        request = RequestFactory().post(path)
+        request.data = {
+            'otp': 543175,
+            'phone_number': set_up[2]
+        }
+        response = views.LoginUser.post(self, request)
+        if type(request.data.get('otp')) is int:
+            assert response.status_code == 200
+
+    def test_otp_invalid_length_return_400(self, set_up):
+        path = reverse('login-otp')
+        phone_number = set_up[2]
+        otp = 56734
+        request = RequestFactory().post(path)
+        request.data = {
+            'otp': otp,
+            'phone_number': phone_number
+        }
+        response = views.LoginUser.post(self, request)
+        if len(str(otp)) != 6:
+            assert response.status_code == 400
+
+    def test_otp_length_return_200(self, set_up):
+        otp, path, phone_number = set_up
+        request = RequestFactory().post(path)
+        request.data = {
+            'otp': otp,
+            'phone_number': phone_number
+        }
+        response = views.LoginUser.post(self, request)
+        if len(str(otp)) == 6:
+            assert response.status_code == 200
+
+    def test_redis_cache_return_200(self, set_up):
         otp, path, phone_number = set_up[0], set_up[1], set_up[2]
         request = RequestFactory().post(path)
         request.data = {
