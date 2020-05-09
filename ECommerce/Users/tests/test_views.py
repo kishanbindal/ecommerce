@@ -13,6 +13,7 @@ otp_service = OtpService()
 User = models.UserInfo
 connection = fakeredis.FakeStrictRedis()
 
+
 @pytest.mark.django_db
 class TestLoginOtpGenerationFunctionality:
 
@@ -21,7 +22,7 @@ class TestLoginOtpGenerationFunctionality:
 
         User.objects.create(first_name="Kishan", last_name="Bindal", phone_number="+911234567800")
 
-    def test_check_user_exists(self, set_up):
+    def test_check_user_exists_return_200(self, set_up):
         phone_number = '+911234567800'
         path = reverse('login-otp-generation')
         request = RequestFactory().post(path)
@@ -29,7 +30,7 @@ class TestLoginOtpGenerationFunctionality:
         response = views.LoginOtp.post(self, request)
         assert response.status_code == 200
 
-    def test_check_user_does_not_exist(self, set_up):
+    def test_check_user_does_not_exist_return_400(self, set_up):
         phone_number = '+911234567805'
         path = reverse('login-otp-generation')
         request = RequestFactory().post(path)
@@ -55,7 +56,7 @@ class TestLoginOtpGenerationFunctionality:
             response_code = 400
             assert response_code == response.status_code
 
-    def test_correct_type_otp(self, set_up):
+    def test_correct_type_otp_return_200(self, set_up):
         phone_number = '+911234567800'
         path = reverse('login-otp-generation')
         request = RequestFactory().post(path)
@@ -69,7 +70,7 @@ class TestLoginOtpGenerationFunctionality:
         if otp_type is int:
             assert 200 == response.status_code
 
-    def test_wrong_type_otp(self, set_up):
+    def test_wrong_type_otp_return_400(self, set_up):
         phone_number = '+911234567800'
         path = reverse('login-otp-generation')
         request = RequestFactory().post(path)
@@ -172,3 +173,8 @@ class TestOtpSubmissionFunctionality:
         if response.status_code == 200:
             connection.set(phone_number, 'online')
             assert connection.get(phone_number).decode('utf8') == 'online'
+
+    # @mock.patch('Users.views.rdb')
+    #     # def test_redis_cache_return_200_mock(self, mock_rdb):
+    #     #     pdb.set_trace()
+    #     #     print(mock_rdb)

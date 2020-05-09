@@ -7,7 +7,7 @@ from rest_framework import status
 from .models import UserInfo
 from .serializers import LoginOtpViewSerializer
 from services.sms_service import OtpService, SmsService
-from services import redis_service
+from services import redis_service, token_service
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -54,6 +54,8 @@ class LoginUser(GenericAPIView):
                 elif len(str(otp)) != 6:
                     raise ValueError('Otp is of invalid length')
                 else:
+                    token = token_service.TokenService().generate_login_token(user.pk)
+                    print(token)
                     return Response(status=status.HTTP_200_OK)
         except UserInfo.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
