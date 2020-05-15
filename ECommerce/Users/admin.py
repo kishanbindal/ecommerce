@@ -1,18 +1,33 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from Users.models import User
 
 
 class CustomUserCreationForm(UserCreationForm):
 
-    class Meta(UserCreationForm.Meta):
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
         model = User
-        fields = UserCreationForm.Meta.fields + ('phone_number',)
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(UserChangeForm, self).__init__(*args, **kwargs)
 
 
-class CustomUserAdmin(UserAdmin):
-    pass
+UserAdmin.add_form = CustomUserCreationForm
+UserAdmin.form = UserChangeForm
+UserAdmin.add_fieldsets = (
+    (None, {
+        'classes': ('wide',),
+        'fields': ('username', 'password1', 'password2', 'phone_number'),
+    }),
+)
 
 # class UserAdmin(BaseUserAdmin):
 #     add_form = CustomUserCreationForm
@@ -20,4 +35,4 @@ class CustomUserAdmin(UserAdmin):
 #     add_fieldsets =
 # Register your models here.
 
-admin.site.register(User, CustomUserAdmin)
+admin.site.register(User, UserAdmin)
