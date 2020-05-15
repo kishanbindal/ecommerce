@@ -10,7 +10,7 @@ from unittest import mock
 
 
 otp_service = OtpService()
-User = models.UserInfo
+User = models.User
 connection = fakeredis.FakeStrictRedis()
 
 
@@ -176,5 +176,4 @@ class TestOtpSubmissionFunctionality:
 
     # @mock.patch('Users.views.rdb')
     #     # def test_redis_cache_return_200_mock(self, mock_rdb):
-    #     #     pdb.set_trace()
     #     #     print(mock_rdb)

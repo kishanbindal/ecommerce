@@ -1,10 +1,10 @@
 from rest_framework.serializers import ModelSerializer
-from .models import UserInfo
+from .models import User
 
 
 class LoginOtpViewSerializer(ModelSerializer):
 
     class Meta:
 
-        model = UserInfo
+        model = User
         fields = ['phone_number']

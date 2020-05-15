@@ -21,6 +21,7 @@ django-admin==2.0.0
 django-cors-headers==3.2.0
 django-elasticsearch-dsl==7.1.1
 django-excel-response2==2.0.8
+django-fakeredis==0.1.1
 django-models-ext==1.1.9
 django-nose==1.4.6
 django-otp==0.8.1
@@ -35,6 +36,7 @@ docutils==0.15.2
 elasticsearch==7.5.1
 elasticsearch-dsl==7.1.0
 Faker==0.9.1
+fakeredis==1.4.1
 Flask==1.1.1
 fun==1.0.0
 furl==2.1.0
@@ -94,6 +96,5 @@ uritemplate==3.0.1
 urllib3==1.25.7
 vine==1.3.0
 wcwidth==0.1.8
-Werkzeug==1.0.0
 xlwt==1.3.0
 zipp==0.6.0

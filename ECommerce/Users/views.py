@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import UserInfo
+from .models import User
 from .serializers import LoginOtpViewSerializer
 from services.sms_service import OtpService, SmsService
 from services import redis_service, token_service
@@ -16,11 +16,13 @@ rdb = redis_service.Redis()
 
 class LoginOtp(GenericAPIView):
 
+    serializer_class = LoginOtpViewSerializer
+
     def post(self, request, *args, **kwargs):
         try:
             serializer = LoginOtpViewSerializer(data=request.data)
             if serializer.is_valid():
-                user = UserInfo.objects.get(phone_number=serializer.data.get('phone_number'))
+                user = User.objects.get(phone_number=serializer.data.get('phone_number'))
                 if user is not None:
                     otp, validity_period = OtpService().generate_otp()
                     if len(str(otp)) != 6:
@@ -32,7 +34,7 @@ class LoginOtp(GenericAPIView):
                         return Response(status=status.HTTP_200_OK)
                 else:
                     return Response(status=status.HTTP_400_BAD_REQUEST)
-        except UserInfo.DoesNotExist:
+        except User.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except ValueError:
             return Response(data=ValueError, status=status.HTTP_400_BAD_REQUEST)
@@ -46,8 +48,8 @@ class LoginUser(GenericAPIView):
 
         try:
             otp = request.data.get('otp')
-            user = UserInfo.objects.get(phone_number=request.data.get('phone_number'))
-            pdb.set_trace()
+            user = User.objects.get(phone_number=request.data.get('phone_number'))
+            # pdb.set_trace()
             if user is not None:
                 if type(otp) != int:
                     raise TypeError('OTP is not of valid type')
@@ -57,7 +59,7 @@ class LoginUser(GenericAPIView):
                     token = token_service.TokenService().generate_login_token(user.pk)
                     print(token)
                     return Response(status=status.HTTP_200_OK)
-        except UserInfo.DoesNotExist:
+        except User.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except TypeError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -69,7 +71,7 @@ class LoginUser(GenericAPIView):
         #     if user is not None:
         #         rdb.set(user.pk, 'online')
         #         return Response(status=status.HTTP_200_OK)
-        # except UserInfo.DoesNotExist:
+        # except User.DoesNotExist:
         #     return Response(status=status.HTTP_400_BAD_REQUEST)
         # except ValueError:
         #     return Response(data=ValueError, status=status.HTTP_400_BAD_REQUEST)

@@ -66,7 +66,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ECommerce.urls'
 
-AUTH_USER_MODEL = 'Users.UserInfo'
+AUTH_USER_MODEL = 'Users.User'
 
 ACCOUNT_SID = os.getenv('account_sid')
 TWILIO_AUTH_TOKEN = os.getenv('auth_token')
