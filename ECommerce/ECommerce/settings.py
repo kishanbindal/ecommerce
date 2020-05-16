@@ -40,11 +40,11 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'Users',
     'rest_framework',
+    'rest_framework_swagger',
     'django_otp',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_hotp',
     'django_otp.plugins.otp_static',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -102,6 +102,8 @@ WSGI_APPLICATION = 'ECommerce.wsgi.application'
 #         'HOST': os.getenv('HOST')
 #     }
 # }
+
+REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
 
 DATABASES = {
     'default': {

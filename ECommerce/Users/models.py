@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
 
-    phone_number = models.CharField(max_length=14, blank=False, null=False, unique=True)
+    phone_number = models.CharField(max_length=14, blank=False, null=False)
 
     # USERNAME_FIELD = 'phone_number'
 

@@ -28,11 +28,14 @@ UserAdmin.add_fieldsets = (
         'fields': ('username', 'password1', 'password2', 'phone_number'),
     }),
 )
-
-# class UserAdmin(BaseUserAdmin):
-#     add_form = CustomUserCreationForm
-#
-#     add_fieldsets =
-# Register your models here.
+UserAdmin.fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (('Permissions'), {
+            'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
+        }),
+        (('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (('Contact Details'), {'fields': ('phone_number',)})
+    )
 
 admin.site.register(User, UserAdmin)

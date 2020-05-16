@@ -19,7 +19,9 @@ class LoginOtp(GenericAPIView):
     serializer_class = LoginOtpViewSerializer
 
     def post(self, request, *args, **kwargs):
+
         try:
+
             serializer = LoginOtpViewSerializer(data=request.data)
             if serializer.is_valid():
                 user = User.objects.get(phone_number=serializer.data.get('phone_number'))
@@ -30,6 +32,7 @@ class LoginOtp(GenericAPIView):
                     elif type(otp) != int:
                         raise TypeError('OTP Generated is not of type integer')
                     else:
+                        rdb.set(user.phone_number, '567345', validity_period)
                         # SmsService().send_sms(user, otp, validity_period)
                         return Response(status=status.HTTP_200_OK)
                 else:
@@ -44,12 +47,19 @@ class LoginOtp(GenericAPIView):
 
 class LoginUser(GenericAPIView):
 
+    serializer_class = LoginOtpViewSerializer
+
     def post(self, request, *args, **kwargs):
 
         try:
+            smd = {
+                'success': False,
+                'message': 'Login Unsuccessful',
+                'data': []
+            }
+
             otp = request.data.get('otp')
             user = User.objects.get(phone_number=request.data.get('phone_number'))
-            # pdb.set_trace()
             if user is not None:
                 if type(otp) != int:
                     raise TypeError('OTP is not of valid type')
@@ -57,7 +67,9 @@ class LoginUser(GenericAPIView):
                     raise ValueError('Otp is of invalid length')
                 else:
                     token = token_service.TokenService().generate_login_token(user.pk)
-                    print(token)
+                    rdb.delete(str(user.phone_number))
+                    rdb.set(user.pk, token)
+                    smd['success'], smd['message'], smd['data'] = True, 'Login Successful', {'token': token}
                     return Response(status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -65,15 +77,3 @@ class LoginUser(GenericAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        # TODO -->
-
-        #     if user is not None:
-        #         rdb.set(user.pk, 'online')
-        #         return Response(status=status.HTTP_200_OK)
-        # except User.DoesNotExist:
-        #     return Response(status=status.HTTP_400_BAD_REQUEST)
-        # except ValueError:
-        #     return Response(data=ValueError, status=status.HTTP_400_BAD_REQUEST)
-        # except TypeError:
-        #     return Response(data=TypeError, status=status.HTTP_400_BAD_REQUEST)
