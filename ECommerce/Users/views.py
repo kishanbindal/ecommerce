@@ -1,11 +1,12 @@
 import logging
 import pdb
-from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
 from .serializers import LoginOtpViewSerializer
+from services.auth import logged_in
 from services.sms_service import OtpService, SmsService
 from services import redis_service, token_service
 
@@ -77,3 +78,21 @@ class LoginUser(GenericAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@method_decorator(logged_in, name='post')
+class UserLogoutView(GenericAPIView):
+
+    serializer_class = LoginOtpViewSerializer
+
+    def post(self, request):
+        token = request.headers.get('token')
+        payload = token_service.TokenService().decode_token(token)
+        user_id = payload.get('token')
+        rdb.delete(user_id)
+        smd = {
+            'success': True,
+            'message': 'Successfully logged user out',
+            'data': []
+        }
+        return Response(data=smd, status=status.HTTP_200_OK)

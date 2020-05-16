@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     path('api/login', views.LoginOtp.as_view(), name="login-otp-generation"),
     path('api/login-submit', views.LoginUser.as_view(), name="login-otp"),
+    path('api/logout', views.UserLogoutView.as_view(), name="logout"),
 ]
