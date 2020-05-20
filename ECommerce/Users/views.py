@@ -22,7 +22,6 @@ class LoginOtp(GenericAPIView):
     def post(self, request, *args, **kwargs):
 
         try:
-
             serializer = LoginOtpViewSerializer(data=request.data)
             if serializer.is_valid():
                 user = User.objects.get(phone_number=serializer.data.get('phone_number'))
@@ -85,10 +84,10 @@ class UserLogoutView(GenericAPIView):
 
     serializer_class = LoginOtpViewSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         token = request.headers.get('token')
         payload = token_service.TokenService().decode_token(token)
-        user_id = payload.get('token')
+        user_id = payload.get('id')
         rdb.delete(user_id)
         smd = {
             'success': True,
