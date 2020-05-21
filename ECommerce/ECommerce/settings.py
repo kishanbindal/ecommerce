@@ -40,6 +40,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'Users',
     'Product',
+    'Cart',
     'rest_framework',
     'rest_framework_swagger',
     'django_otp',

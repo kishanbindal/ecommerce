@@ -32,9 +32,14 @@ class LoginOtp(GenericAPIView):
                     elif type(otp) != int:
                         raise TypeError('OTP Generated is not of type integer')
                     else:
+                        smd = {
+                            'success': True,
+                            'message': "Successfully generated OTP",
+                            'data': {'otp': 567345}
+                        }
                         rdb.set(user.phone_number, '567345', validity_period)
                         # SmsService().send_sms(user, otp, validity_period)
-                        return Response(status=status.HTTP_200_OK)
+                        return Response(data=smd, status=status.HTTP_200_OK)
                 else:
                     return Response(status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
@@ -57,7 +62,6 @@ class LoginUser(GenericAPIView):
                 'message': 'Login Unsuccessful',
                 'data': []
             }
-
             otp = request.data.get('otp')
             user = User.objects.get(phone_number=request.data.get('phone_number'))
             if user is not None:
@@ -66,11 +70,12 @@ class LoginUser(GenericAPIView):
                 elif len(str(otp)) != 6:
                     raise ValueError('Otp is of invalid length')
                 else:
+                    pdb.set_trace()
                     token = token_service.TokenService().generate_login_token(user.pk)
                     rdb.delete(str(user.phone_number))
                     rdb.set(user.pk, token)
                     smd['success'], smd['message'], smd['data'] = True, 'Login Successful', {'token': token}
-                    return Response(status=status.HTTP_200_OK)
+                    return Response(data=smd, status=status.HTTP_200_OK)
         except User.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except TypeError:

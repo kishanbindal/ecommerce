@@ -11,7 +11,6 @@ def logged_in(func=None):
     @wraps(func)
     def func_decorator(request, *args, **kwargs):
         try:
-            pdb.set_trace()
             token = request.headers.get('token')
             if token is None:
                 raise ValueError('Token Cannot be empty')
@@ -22,7 +21,7 @@ def logged_in(func=None):
                 user_id = payload.get('id')
                 if rdb.exists(user_id) and rdb.get(user_id).decode() == token:
                     if func is not None:
-                        return func(request)
+                        return func(request, args, kwargs)
                     else:
                         print('FUNC IS NONE')
                 else:

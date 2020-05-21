@@ -23,5 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Users.urls')),
     path('', schema_view),
-    # path('', include('Product.urls'))
+    path('', include('Product.urls')),
 ]
