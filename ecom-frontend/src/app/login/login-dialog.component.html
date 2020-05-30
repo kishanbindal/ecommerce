@@ -1,0 +1,37 @@
+<!-- PRE OTP -->
+<div *ngIf="otp_sent === false;else otpSent">
+    <mat-form-field>
+        <mat-label>Enter Phone Number</mat-label>
+        <input type="text" matInput [formControl]="phone_number">
+    </mat-form-field>
+    
+    <br>
+    
+    <button mat-button (click)='postNumber(phone_number)'>
+        Submit Phone Number
+    </button>
+    
+    <br>
+    
+    <button mat-button mat-dialog-close>
+        Close
+    </button>
+</div>
+
+<!-- POST OTP BEING SENT -->
+
+<ng-template #otpSent>
+    <mat-form-field>
+        <mat-label>Phone Number</mat-label>
+        <input type="text" matInput [formControl]="phone_number">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Enter Otp</mat-label>
+        <input type="text" matInput [formControl]="otp">
+    </mat-form-field>
+
+    <button mat-button (click)="postOtp(phone_number, otp)">Submit OTP</button>
+    <br>
+    <button mat-button mat-dialog-close>Close</button>
+</ng-template>

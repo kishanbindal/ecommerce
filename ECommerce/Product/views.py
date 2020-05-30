@@ -3,7 +3,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from services.auth import logged_in
-from .models import Product
+from services.token_service import TokenService
+from .models import Product, Cart
 from .serializers import ProductSerializer
 import pdb
 
@@ -53,3 +54,24 @@ class SingleProductView(GenericAPIView):
 
     def delete(self, request, *args, **kwargs):
         pass
+
+
+@method_decorator(logged_in, name='dispatch')
+class CartView(GenericAPIView):
+
+    def get(self, request, *args, **kwargs):
+        try:
+            pdb.set_trace()
+            smd = {
+                'success': False,
+                'message': 'Could not retrieve cart',
+                'data': []
+            }
+            token = request.headers.get('token')
+            payload = TokenService().decode_token(token)
+            id = payload.get('id')
+            cart = Cart.objects.filter(customer_id=id).latest('pk')
+            smd['success'], smd['message'], smd['data'] = True, 'Retrieved Cart', []
+            return Response(data=None)
+        except Cart.DoesNotExist:
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)

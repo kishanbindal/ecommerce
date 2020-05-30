@@ -21,6 +21,12 @@ class LoginOtp(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
 
+        smd = {
+            'success': False,
+            'message': 'Unsuccessful in Generating Otp. Please Try Again',
+            'data': []
+        }
+
         try:
             serializer = LoginOtpViewSerializer(data=request.data)
             if serializer.is_valid():
@@ -41,13 +47,16 @@ class LoginOtp(GenericAPIView):
                         # SmsService().send_sms(user, otp, validity_period)
                         return Response(data=smd, status=status.HTTP_200_OK)
                 else:
-                    return Response(status=status.HTTP_400_BAD_REQUEST)
+                    return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            smd['data'] = 'User Does Not Exist'
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
         except ValueError:
-            return Response(data=ValueError, status=status.HTTP_400_BAD_REQUEST)
+            smd['data'] = ValueError
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
         except TypeError:
-            return Response(data=TypeError, status=status.HTTP_400_BAD_REQUEST)
+            smd['data'] = TypeError
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginUser(GenericAPIView):
@@ -70,7 +79,6 @@ class LoginUser(GenericAPIView):
                 elif len(str(otp)) != 6:
                     raise ValueError('Otp is of invalid length')
                 else:
-                    pdb.set_trace()
                     token = token_service.TokenService().generate_login_token(user.pk)
                     rdb.delete(str(user.phone_number))
                     rdb.set(user.pk, token)

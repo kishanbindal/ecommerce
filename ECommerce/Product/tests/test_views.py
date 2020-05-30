@@ -29,4 +29,4 @@ class TestProductsView:
         return user, product_1, product_2
 
     def test_user_authenticated_return_401_if_not_authenticated(self, set_up):
-
+        pass
