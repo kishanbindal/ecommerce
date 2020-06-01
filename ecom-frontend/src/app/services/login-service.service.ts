@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators'
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 const configUrl = 'http://127.0.0.1:8000'
 
@@ -29,11 +28,11 @@ export class LoginService {
       'phone_number' : phone_number,
       'otp': otp 
     }
-    console.log(`Data : ${data}`)
+    console.log(`Submit Otp Data : ${data}`)
     const url = configUrl+'/api/login-submit'
     return this._http.post(url, data)
     .pipe(
-      catchError(this.handleError)
+      catchError(this.handleError) // CatchError -> handleError(rturn throwError) -> handle in subscription
     )
   }
 

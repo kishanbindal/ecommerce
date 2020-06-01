@@ -7,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopbarComponent implements OnInit {
 
-  constructor() { }
+  loggedInStatus = false;
+
+  constructor() { 
+    if (localStorage.getItem('token') != null){
+      this.loggedInStatus = true
+    }
+  }
 
   ngOnInit(): void {
+
+  }
+
+  GetLogInStatus($event){
+    console.log($event)
+    if ($event === true){
+      this.loggedInStatus = true
+    }
   }
 
 }

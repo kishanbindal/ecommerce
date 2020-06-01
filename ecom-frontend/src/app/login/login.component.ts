@@ -1,4 +1,4 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter} from '@angular/core';
 import { MatDialog, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { LoginService} from '../services/login-service.service'
 import { FormControl } from '@angular/forms';
@@ -11,6 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
 
+  @Output() loggedInEvent = new EventEmitter<boolean>()
+
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -21,8 +23,13 @@ export class LoginComponent implements OnInit {
       width: "50%",
       height: "75%"
     })
-  }
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true){
+        this.loggedInEvent.emit(true)
+      }
+    })
+  }
 }
 
 
@@ -32,9 +39,11 @@ export class LoginComponent implements OnInit {
 })
 export class LoginDialogComponent{
 
-  phone_number = new FormControl('')
-  otp = new FormControl('')
-  otp_sent = false
+  @Output() loggedInEvent = new EventEmitter();
+
+  phone_number = new FormControl('');
+  otp = new FormControl('');
+  otp_sent = false;
 
   constructor(private loginService: LoginService,
     private _snackbar : MatSnackBar,
@@ -57,8 +66,8 @@ export class LoginDialogComponent{
       }
     }, (error) => {
       console.log(error.error)
-      let responseData = error.error
-      this._snackbar.open(responseData.data+ '. Please Retry', 'Close')
+      let responseData = error.error // smd response from the server
+      this._snackbar.open(responseData.data+ '. Please Retry', 'Close') //responseData.data = smd['data']
       phone_number.setValue('')
     })
   }
@@ -67,8 +76,7 @@ export class LoginDialogComponent{
     this.loginService.submitOtp(phone_number.value, Number(otp.value)).subscribe(response => {
       if (response['success'] === true){
         localStorage.setItem('token', response['data']['token'])
-        console.log('Inside Dialog')
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       }
       else{
         this._snackbar.open('Unable to Login, please try again', 'close',{

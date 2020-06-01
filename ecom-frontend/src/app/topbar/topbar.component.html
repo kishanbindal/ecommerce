@@ -1,3 +1,8 @@
 <mat-toolbar>
-    <app-login></app-login>
+    <app-login *ngIf="loggedInStatus === false;else loggedIn" (loggedInEvent)="GetLogInStatus($event)"></app-login>
 </mat-toolbar>
+
+
+<ng-template #loggedIn>
+    <app-logout></app-logout>
+</ng-template>

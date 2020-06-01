@@ -2,18 +2,18 @@ from django.utils.decorators import method_decorator
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
-from services.auth import logged_in
+from services.auth import logged_in, is_admin
 from services.token_service import TokenService
-from .models import Product, Cart
+from .models import Product
 from .serializers import ProductSerializer
 import pdb
 
 # Create your views here.
 
 
-@method_decorator(logged_in, name='dispatch')
 class ProductsView(GenericAPIView):
 
+    # @method_decorator(logged_in, name='dispatch')
     def get(self, request):
         all_products = Product.objects.all()
         smd = {
@@ -23,13 +23,14 @@ class ProductsView(GenericAPIView):
         }
         return Response(data=smd, status=status.HTTP_200_OK)
 
+    # @method_decorator(is_admin, name='admin post')
     def post(self, request):
         pass
 
 
-@method_decorator(logged_in, name='dispatch')
 class SingleProductView(GenericAPIView):
 
+    # @logged_in
     def get(self, request, *args, **kwargs):
         try:
             id = args[1].get('id')
@@ -56,22 +57,14 @@ class SingleProductView(GenericAPIView):
         pass
 
 
-@method_decorator(logged_in, name='dispatch')
-class CartView(GenericAPIView):
+class OrderView(GenericAPIView):
 
-    def get(self, request, *args, **kwargs):
-        try:
-            pdb.set_trace()
-            smd = {
-                'success': False,
-                'message': 'Could not retrieve cart',
-                'data': []
-            }
-            token = request.headers.get('token')
-            payload = TokenService().decode_token(token)
-            id = payload.get('id')
-            cart = Cart.objects.filter(customer_id=id).latest('pk')
-            smd['success'], smd['message'], smd['data'] = True, 'Retrieved Cart', []
-            return Response(data=None)
-        except Cart.DoesNotExist:
-            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, id):
+        pass
+
+    def post(self):
+        pass
+
+    def put(self, request, id):
+        pass
+

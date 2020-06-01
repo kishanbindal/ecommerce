@@ -4,6 +4,8 @@ from django.utils.decorators import method_decorator
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
+
 from .models import User
 from .serializers import LoginOtpViewSerializer
 from services.auth import logged_in
@@ -79,8 +81,11 @@ class LoginUser(GenericAPIView):
                 elif len(str(otp)) != 6:
                     raise ValueError('Otp is of invalid length')
                 else:
-                    token = token_service.TokenService().generate_login_token(user.pk)
                     rdb.delete(str(user.phone_number))
+                    if user.is_superuser is False:
+                        token = token_service.TokenService().generate_login_token(user.pk)
+                    else:
+                        token = token_service.TokenService().generate_admin_token(user.pk)
                     rdb.set(user.pk, token)
                     smd['success'], smd['message'], smd['data'] = True, 'Login Successful', {'token': token}
                     return Response(data=smd, status=status.HTTP_200_OK)
@@ -93,18 +98,19 @@ class LoginUser(GenericAPIView):
 
 
 @method_decorator(logged_in, name='post')
-class UserLogoutView(GenericAPIView):
-
-    serializer_class = LoginOtpViewSerializer
+class UserLogoutView(APIView):
 
     def post(self, request, *args, **kwargs):
-        token = request.headers.get('token')
-        payload = token_service.TokenService().decode_token(token)
-        user_id = payload.get('id')
-        rdb.delete(user_id)
-        smd = {
-            'success': True,
-            'message': 'Successfully logged user out',
-            'data': []
-        }
-        return Response(data=smd, status=status.HTTP_200_OK)
+        try:
+            token = request.headers.get('token')
+            payload = token_service.TokenService().decode_token(token)
+            user_id = payload.get('id')
+            rdb.delete(user_id)
+            smd = {
+                'success': True,
+                'message': 'Successfully logged user out',
+                'data': []
+            }
+            return Response(data=smd, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(data={'error': "error"}, status=status.HTTP_400_BAD_REQUEST)

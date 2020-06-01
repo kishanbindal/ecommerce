@@ -11,6 +11,7 @@ def logged_in(func=None):
     @wraps(func)
     def func_decorator(request, *args, **kwargs):
         try:
+            pdb.set_trace()
             token = request.headers.get('token')
             if token is None:
                 raise ValueError('Token Cannot be empty')
@@ -35,3 +36,29 @@ def logged_in(func=None):
 
     return func_decorator
 
+
+def is_admin(function=None):
+
+    @wraps(function)
+    def function_decorator(request, *args, **kwargs):
+        try:
+            token = request.headers.get('token')
+            if token is None:
+                raise ValueError('Token Is Empty. Please C  heck for token.')
+            elif type(token) != str:
+                raise TypeError('Token is of invalid type')
+            else:
+                payload = token_service.TokenService().decode_token(token)
+                user_id, role = payload.get('id'), payload.get('role')
+                if rdb.exists(user_id) and role == 'admin':
+                    return function(request, args, kwargs)
+                else:
+                    print('Not admin, Unauthorized for current operation')
+                    raise CacheDoesNotExist(f'User Not in Cache Memory')
+        except ValueError:
+            return ValueError
+        except TypeError:
+            return TypeError
+        except CacheDoesNotExist:
+            return CacheDoesNotExist
+    return function_decorator

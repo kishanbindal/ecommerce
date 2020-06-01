@@ -15,13 +15,12 @@ class Product(models.Model):  # Product Inventory which only admin can access
         return self.name
 
 
-class Cart(models.Model):  # Each product is linked to a particular customer/userID.
+class OrderProduct(models.Model):  # Each product is linked to a particular customer/userID.
 
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ManyToManyField(Product)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.CharField(max_length=2, blank=False)
     subtotal = models.DecimalField(max_digits=7, decimal_places=2)
-    is_billed = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.pk}'
