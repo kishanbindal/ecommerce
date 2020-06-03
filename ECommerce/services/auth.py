@@ -1,4 +1,6 @@
 from functools import wraps
+from rest_framework.response import Response
+from rest_framework import status
 from services import sms_service, redis_service, token_service
 from services.exception import CacheDoesNotExist
 import pdb
@@ -11,7 +13,6 @@ def logged_in(func=None):
     @wraps(func)
     def func_decorator(request, *args, **kwargs):
         try:
-            pdb.set_trace()
             token = request.headers.get('token')
             if token is None:
                 raise ValueError('Token Cannot be empty')
@@ -60,5 +61,5 @@ def is_admin(function=None):
         except TypeError:
             return TypeError
         except CacheDoesNotExist:
-            return CacheDoesNotExist
+            return Response(data=[{'error': 'Unauthorized. Must Be Admin'}], status=status.HTTP_400_BAD_REQUEST)
     return function_decorator

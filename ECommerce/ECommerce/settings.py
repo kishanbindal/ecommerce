@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -108,19 +109,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ECommerce.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.getenv('NAME'),
-#         'USER': os.getenv('USER'),
-#         'PASSWORD': os.getenv('PASSWORD'),
-#         'HOST': os.getenv('HOST')
-#     }
-# }
 
 REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
 

@@ -23,7 +23,7 @@ export class LogoutComponent implements OnInit {
       localStorage.removeItem('token')
       this.loggedOut.emit(true)
       this._snackbar.open('Successfully Logged Out', 'Close', {
-        duration : 3000
+        duration : 3000 
       })
     }
   })
