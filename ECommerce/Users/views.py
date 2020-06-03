@@ -30,6 +30,7 @@ class LoginOtp(GenericAPIView):
         }
 
         try:
+            pdb.set_trace()
             serializer = LoginOtpViewSerializer(data=request.data)
             if serializer.is_valid():
                 user = User.objects.get(phone_number=serializer.data.get('phone_number'))

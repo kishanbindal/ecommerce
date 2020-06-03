@@ -10,12 +10,16 @@ import { AppComponent } from './app.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import { LoginComponent, LoginDialogComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
+import { ProductcardComponent } from './productcard/productcard.component';
+import { ProductgridComponent } from './productgrid/productgrid.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Angular Material Imports
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule, MatCard } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule} from '@angular/material/input';
+import { MatGridListModule } from '@angular/material/grid-list'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -32,6 +36,8 @@ import { LogoutService } from './services/logout.service';
     LoginComponent,
     LoginDialogComponent,
     LogoutComponent,
+    ProductgridComponent,
+    ProductcardComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -40,8 +46,10 @@ import { LogoutService } from './services/logout.service';
     FormsModule,
     HttpClientModule,
     MatButtonModule,
+    MatCardModule,
     MatDialogModule,
     MatInputModule,
+    MatGridListModule,
     MatSnackBarModule,
     MatToolbarModule,
     ReactiveFormsModule,
