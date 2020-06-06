@@ -16,13 +16,18 @@ export class TopbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   GetLogInStatus($event){
     console.log($event)
     if ($event === true){
       this.loggedInStatus = true
+    }
+  }
+
+  GetLoggedOutStatus($event){
+    if ($event === true){
+      this.loggedInStatus = false
     }
   }
 

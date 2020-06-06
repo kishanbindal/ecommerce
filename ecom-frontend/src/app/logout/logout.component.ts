@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LogoutComponent implements OnInit {
 
-  @Output() loggedOut = new EventEmitter<boolean>()
+  @Output() logOutEvent = new EventEmitter<boolean>()
 
   constructor(private logoutService : LogoutService,
     private _snackbar : MatSnackBar) { }
@@ -21,7 +21,7 @@ export class LogoutComponent implements OnInit {
   this.logoutService.sendLogout().subscribe(response => {
     if (response['success'] == true){
       localStorage.removeItem('token')
-      this.loggedOut.emit(true)
+      this.logOutEvent.emit(true)
       this._snackbar.open('Successfully Logged Out', 'Close', {
         duration : 3000 
       })

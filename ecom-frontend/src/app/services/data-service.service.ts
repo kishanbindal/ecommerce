@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { BehaviorSubject, throwError, config } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -47,6 +47,19 @@ export class DataService {
           duration: 1500,
         })
       }
+    })
+  }
+
+  getProductById(product_id){
+    const token = localStorage.getItem('token')
+    let url = configUrl+`api/products/${product_id}`
+    this._http.get(url, {headers: {
+      'token': token
+    }}).pipe(
+      catchError(this.handleError)
+    )
+    .subscribe(response => {
+      console.log(response)
     })
   }
 

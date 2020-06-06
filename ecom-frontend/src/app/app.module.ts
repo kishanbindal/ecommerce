@@ -28,6 +28,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { DataService } from './services/data-service.service';
 import { LoginService } from './services/login-service.service';
 import { LogoutService } from './services/logout.service';
+import { SingleproductComponent } from './singleproduct/singleproduct.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { LogoutService } from './services/logout.service';
     LogoutComponent,
     ProductgridComponent,
     ProductcardComponent,
+    SingleproductComponent,
   ],
   imports: [
     AppRoutingModule,
