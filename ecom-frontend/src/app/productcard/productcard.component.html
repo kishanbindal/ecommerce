@@ -1,5 +1,5 @@
 <mat-card>
-    <mat-card-title><a [routerLink]="['/products" routerLinkActive="router-link-active" >{{ product.name }}</a></mat-card-title>
+    <mat-card-title><a [routerLink]="['products', product.name]" routerLinkActive="router-link-active" (click)="requestSingleProduct(product.id)" >{{ product.name }}</a></mat-card-title>
     <img mat-card-image [src]="product.images">
 </mat-card>
     

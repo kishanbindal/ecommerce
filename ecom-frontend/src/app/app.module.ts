@@ -22,13 +22,15 @@ import { MatInputModule} from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatToolbarModule } from '@angular/material/toolbar';
-
+import { MatMenuModule } from '@angular/material/menu'
 
 //Services Imports
 import { DataService } from './services/data-service.service';
 import { LoginService } from './services/login-service.service';
 import { LogoutService } from './services/logout.service';
 import { SingleproductComponent } from './singleproduct/singleproduct.component';
+import { AdminComponent } from './admin/admin.component';
+import { AdminpageComponent } from './adminpage/adminpage.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { SingleproductComponent } from './singleproduct/singleproduct.component'
     ProductgridComponent,
     ProductcardComponent,
     SingleproductComponent,
+    AdminComponent,
+    AdminpageComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -52,6 +56,7 @@ import { SingleproductComponent } from './singleproduct/singleproduct.component'
     MatDialogModule,
     MatInputModule,
     MatGridListModule,
+    MatMenuModule,
     MatSnackBarModule,
     MatToolbarModule,
     ReactiveFormsModule,

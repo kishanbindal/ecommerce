@@ -8,10 +8,15 @@ import { DataService } from '../services/data-service.service';
 })
 export class SingleproductComponent implements OnInit {
 
+  product
+
   constructor(private ds : DataService) { }
 
   ngOnInit(): void {
     // GET PRODUCT BY ID
+    this.ds.productIdItem.subscribe(data => {
+      this.product = data
+    })
   }
 
 }

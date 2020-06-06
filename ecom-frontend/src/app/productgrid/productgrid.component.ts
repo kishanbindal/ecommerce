@@ -16,7 +16,7 @@ export class ProductgridComponent implements OnInit {
     this.ds.getAllProducts()
     this.ds.productsList.subscribe(data => {
       this.allProducts = data
-      console.log('All Products : ' + this.allProducts)
+      // console.log('All Products : ' + this.allProducts)
     })
   }
 

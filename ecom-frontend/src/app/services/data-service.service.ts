@@ -20,6 +20,9 @@ export class DataService {
 
   private productSource = new BehaviorSubject('');
   public productsList = this.productSource.asObservable();
+
+  private productIdSource = new BehaviorSubject('No Product to Show');
+  public productIdItem = this.productIdSource.asObservable();
   
   constructor(private _http: HttpClient, private _snackbar: MatSnackBar) {}
 
@@ -37,8 +40,8 @@ export class DataService {
       catchError(this.handleError)
     )
     .subscribe(response => {
-      console.log('DataService All Products Respone :')
-      console.log(response)
+      // console.log('DataService All Products Respone :')
+      // console.log(response)
       if (response['success'] === true){
         this.productSource.next(response['data'])
       }
@@ -52,14 +55,18 @@ export class DataService {
 
   getProductById(product_id){
     const token = localStorage.getItem('token')
-    let url = configUrl+`api/products/${product_id}`
+    let url = configUrl+`/api/products/${product_id}`
+    console.log('Product by ID url :' +url)
     this._http.get(url, {headers: {
       'token': token
     }}).pipe(
       catchError(this.handleError)
     )
     .subscribe(response => {
-      console.log(response)
+      // console.log(response)
+      if (response['success'] === true){
+        this.productIdSource.next(response['data'])
+      }
     })
   }
 

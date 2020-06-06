@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { DataService } from '../services/data-service.service';
 
 @Component({
   selector: 'app-productcard',
@@ -9,9 +10,13 @@ export class ProductcardComponent implements OnInit {
 
   @Input() product
   
-  constructor() { }
+  constructor(private ds : DataService) { }
 
   ngOnInit(): void {
   }
+
+  requestSingleProduct(product_primary_key){
+    this.ds.getProductById(product_primary_key)
+  } 
 
 }

@@ -58,7 +58,8 @@ class SingleProductView(GenericAPIView):
     # @logged_in
     def get(self, request, *args, **kwargs):
         try:
-            id = args[1].get('id')
+            # pdb.set_trace()
+            id = kwargs.get('id')
             product = Product.objects.get(pk=id)
             serializer = ProductSerializer(product)
             smd = {

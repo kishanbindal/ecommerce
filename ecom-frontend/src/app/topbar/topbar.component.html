@@ -4,5 +4,6 @@
 
 
 <ng-template #loggedIn>
+    <app-admin *ngIf="adminCheck === true"></app-admin>
     <app-logout (logOutEvent)="GetLoggedOutStatus($event)"></app-logout>
 </ng-template>
