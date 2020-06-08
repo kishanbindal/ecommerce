@@ -20,7 +20,12 @@ class AwsServices:
         return url
 
     def upload_img(self, img_file, object_name):
-        obj_name = object_name.replace(" ", "_")
+        import pdb
+        pdb.set_trace()
+        if " " in object_name:
+            obj_name = object_name.replace(" ", "_")
+        else:
+            obj_name = object_name
         self.s3_client.upload_fileobj(img_file, self.bucket, obj_name)
         url = self._generate_url(obj_name)
         return url

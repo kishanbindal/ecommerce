@@ -43,6 +43,7 @@ def is_admin(function=None):
     @wraps(function)
     def function_decorator(request, *args, **kwargs):
         try:
+            # pdb.set_trace()
             token = request.headers.get('token')
             if token is None:
                 raise ValueError('Token Is Empty. Please C  heck for token.')
@@ -57,7 +58,7 @@ def is_admin(function=None):
                     print('Not admin, Unauthorized for current operation')
                     raise CacheDoesNotExist(f'User Not in Cache Memory')
         except ValueError:
-            return ValueError
+            return Response(data=[{'error': ValueError}], status=status.HTTP_400_BAD_REQUEST)
         except TypeError:
             return TypeError
         except CacheDoesNotExist:

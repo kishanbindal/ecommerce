@@ -36,6 +36,7 @@ class ProductsView(GenericAPIView):
         # else:
 
         # if serializer.is_valid():
+        pdb.set_trace()
         if request.data.get('images') is not None:
             img_file = request.data.get('images')
             url = AwsServices().upload_img(img_file, request.data.get('name'))

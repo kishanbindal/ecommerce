@@ -70,4 +70,15 @@ export class DataService {
     })
   }
 
+  addProduct(data){
+    const token = localStorage.getItem('token')
+    let url = configUrl+"/api/products/"
+    return this._http.post(url, data, {headers:{
+      'token': token
+    }})
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
 }

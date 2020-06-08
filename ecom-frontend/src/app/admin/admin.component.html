@@ -1,6 +1,1 @@
-<button mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
-<mat-menu #adminMenu="matMenu" xPosition="after">
-    <button mat-menu-item>Add Product</button>
-    <button mat-menu-item>Edit Product</button>
-    <button mat-menu-item>Delete Product</button>
-</mat-menu>
+<button mat-button (click)="goToAdminPage()">Admin</button>

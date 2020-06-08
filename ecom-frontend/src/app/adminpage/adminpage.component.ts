@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../services/data-service.service';
 
 @Component({
   selector: 'app-adminpage',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminpageComponent implements OnInit {
 
-  constructor() { }
+  allProducts
+
+  constructor(private ds: DataService) { }
 
   ngOnInit(): void {
+    this.ds.getAllProducts()
+    this.ds.productsList.subscribe(data => {
+      this.allProducts = data
+    })
   }
 
 }
