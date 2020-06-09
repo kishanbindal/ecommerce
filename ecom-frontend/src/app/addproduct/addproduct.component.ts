@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { DataService } from '../services/data-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DomSanitizer } from '@angular/platform-browser';
 
 // interface Product {
 //   name: string,
@@ -44,27 +45,34 @@ export class AddproductDialogComponent {
   product_quantity = new FormControl('');
   product_price = new FormControl('');
 
+  imageDomUrl;
+
   constructor(private ds : DataService,
     private dialogRef: MatDialogRef<AddproductDialogComponent>,
-    private _snackbar: MatSnackBar){ }
+    private _snackbar: MatSnackBar,
+    private domSanitizer : DomSanitizer){ }
 
   submitAddProductData(){
+    let uploadData = new FormData()
     let data = {
-      name: this.product_name.value,
-      images: this.product_image,
-      quantity: this.product_quantity.value,
-      price: this.product_price.value,
+      'name': this.product_name.value,
+      'images': this.product_image,
+      'quantity': this.product_quantity.value,
+      'price': this.product_price.value,
+    }
+    for (var item in data) {
+      uploadData.append(item, data[item])
     }
     console.log('Data to backend : ');
-    console.log(data)
-    // this.ds.addProduct(data).subscribe(response => {
-    //   console.log(response)
-    //   if (response['success'] == true){
-    //     this.ds.getAllProducts()
-    //     this._snackbar.open('Product Has been Created', 'close',{duration: 1500})
-    //     this.dialogRef.close()
-    //   }
-    // })
+    console.log(uploadData)
+    this.ds.addProduct(uploadData).subscribe(response => {
+      console.log(response)
+      if (response['success'] == true){
+        this.ds.getAllProducts()
+        this._snackbar.open('Product Has been Created', 'close',{duration: 1500})
+        this.dialogRef.close()
+      }
+    })
   }
 
   getImage($event){
@@ -73,7 +81,10 @@ export class AddproductDialogComponent {
     console.log(fileToUpload)
     var reader = new FileReader();
     reader.readAsDataURL(fileToUpload);
-    console.log(JSON.stringify(reader.result))
-    console.log(reader.result)
+    setTimeout( () => {
+      console.log(reader.result)
+    }, 250)
+    this.product_image = fileToUpload
+    this.imageDomUrl = this.domSanitizer.bypassSecurityTrustUrl(JSON.stringify(reader.result))
   }
 }
