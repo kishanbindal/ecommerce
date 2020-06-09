@@ -16,7 +16,7 @@ class AwsServices:
         self.bucket = os.getenv('AWS_STORAGE_BUCKET_NAME')
 
     def _generate_url(self, object_name):
-        url = f"https://s3.ap-south.amazonaws.com/{object_name}"
+        url = f"https://f{self.bucket}s3.ap-south.amazonaws.com/{object_name}"
         return url
 
     def upload_img(self, img_file, object_name):

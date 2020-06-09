@@ -56,10 +56,14 @@ export class AddproductDialogComponent {
     let uploadData = new FormData()
     let data = {
       'name': this.product_name.value,
-      'images': this.product_image,
+      // 'images': this.product_image,
       'quantity': this.product_quantity.value,
       'price': this.product_price.value,
     }
+    if (this.product_image !== null){
+      data['images']=this.product_image
+    }
+
     for (var item in data) {
       uploadData.append(item, data[item])
     }

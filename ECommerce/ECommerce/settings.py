@@ -126,6 +126,8 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
+AWS_DEFAULT_ACL = None
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
