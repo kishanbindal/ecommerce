@@ -81,4 +81,15 @@ export class DataService {
     )
   }
 
+  deleteProduct(id){
+    const token = localStorage.getItem('token')
+    let url = configUrl+`/api/products/${id}/`
+    return this._http.delete(url,{headers:{
+      'token': token
+    }})
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
 }

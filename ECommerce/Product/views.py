@@ -85,8 +85,26 @@ class SingleProductView(GenericAPIView):
             pass
         pass
 
+    @method_decorator(is_admin)
     def delete(self, request, *args, **kwargs):
-        pass
+        smd = {
+            'success': False,
+            'message': 'Could Not Delete Product',
+            'data': []
+        }
+        try:
+            product_id = args[1].get('id')
+            if product_id is None:
+                raise ValueError('Could not read product ID from URL')
+            product = Product.objects.get(pk=product_id)
+            product.delete()
+            smd['success'], smd['message'] = True, f'Successfuly Deleted {product.name} '
+            return Response(data=smd, status=status.HTTP_200_OK)
+        except ValueError:
+            smd['data'] = ValueError
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderView(GenericAPIView):

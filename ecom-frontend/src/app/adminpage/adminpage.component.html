@@ -1,5 +1,8 @@
 <app-addproduct></app-addproduct>
 
 <mat-list>
-    <mat-list-item *ngFor="let product of allProducts">{{product.name}}</mat-list-item>
+    <div *ngFor="let product of allProducts">
+        <mat-list-item>{{product.name}}</mat-list-item>
+        <app-deletebutton [id]="product.id"></app-deletebutton>
+    </div>
 </mat-list>
