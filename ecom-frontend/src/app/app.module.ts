@@ -36,6 +36,9 @@ import { AdminpageComponent } from './adminpage/adminpage.component';
 import { AddproductComponent, AddproductDialogComponent } from './addproduct/addproduct.component';
 import { DeletebuttonComponent } from './deletebutton/deletebutton.component';
 import { UpdateproductComponent, UpdateProductDialogComponent } from './updateproduct/updateproduct.component';
+import { OpbuttonComponent } from './opbutton/opbutton.component';
+import { AddbuttonComponent } from './addbutton/addbutton.component';
+import { ReducebuttonComponent } from './reducebutton/reducebutton.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +57,9 @@ import { UpdateproductComponent, UpdateProductDialogComponent } from './updatepr
     DeletebuttonComponent,
     UpdateproductComponent,
     UpdateProductDialogComponent,
+    OpbuttonComponent,
+    AddbuttonComponent,
+    ReducebuttonComponent,
   ],
   imports: [
     AppRoutingModule,

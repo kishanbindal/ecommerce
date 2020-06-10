@@ -21,6 +21,10 @@ class OrderProduct(models.Model):  # Each product is linked to a particular cust
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.CharField(max_length=2, blank=False)
     subtotal = models.DecimalField(max_digits=7, decimal_places=2)
+    is_billed = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.pk}'
+
+    def get_subtotal(self):
+        return self.product.price * self.quantity

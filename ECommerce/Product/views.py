@@ -59,7 +59,6 @@ class SingleProductView(GenericAPIView):
     # @logged_in
     def get(self, request, *args, **kwargs):
         try:
-            # pdb.set_trace()
             id = kwargs.get('id')
             product = Product.objects.get(pk=id)
             serializer = ProductSerializer(product)
@@ -77,6 +76,7 @@ class SingleProductView(GenericAPIView):
                  },
                 status=status.HTTP_400_BAD_REQUEST)
 
+    @method_decorator(is_admin)
     def put(self, request, *args, **kwargs):
 
         smd = {
@@ -85,7 +85,6 @@ class SingleProductView(GenericAPIView):
             'data': []
         }
         try:
-            pdb.set_trace()
             product_id = kwargs['id']
             if type(request.data.get('images')) is not str:
                 url = AwsServices().upload_img(request.data.get('images'), request.data.get('name'))
@@ -102,7 +101,6 @@ class SingleProductView(GenericAPIView):
                 return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
-
 
     @method_decorator(is_admin)
     def delete(self, request, *args, **kwargs):
@@ -130,8 +128,30 @@ class OrderView(GenericAPIView):
 
     serializer_class = OrderProductSerializer
 
-    def post(self, request):
-        pass
+    @method_decorator(logged_in)
+    def post(self, request, *args, **kwargs):
+
+        smd = {
+            'success': False,
+            'message': 'Unsuccessful in creating order',
+            'data': []
+        }
+        try:
+            pdb.set_trace()
+            token = request.headers.get('token')
+            payload = TokenService().decode_token(token)
+            user_id = payload.get('id')
+            serializer = OrderProductSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(customer_id=user_id)
+                smd['success'], smd['message'] = True, 'Successfully created Order Item'
+                return Response(data=smd, status=status.HTTP_200_OK)
+            else:
+                smd['data'] = serializer.errors
+                return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            # smd['data'] =
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, id):
         pass

@@ -10,7 +10,13 @@ export class SingleproductComponent implements OnInit {
 
   product
 
-  constructor(private ds : DataService) { }
+  constructor(private ds : DataService) {
+    this.ds.productIdItem.subscribe(data => {
+      console.log(data)
+      this.product = data
+      console.log(this.product)
+    })
+   }
 
   ngOnInit(): void {
     // GET PRODUCT BY ID

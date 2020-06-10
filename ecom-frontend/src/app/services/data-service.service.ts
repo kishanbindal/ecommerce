@@ -105,4 +105,16 @@ export class DataService {
     )
   }
 
+  addOrderItem(data){
+    const token = localStorage.getItem('token')
+    let url = configUrl+'/api/order/'
+    console.log(url)
+    return this._http.post(url, data, {headers:{
+      'token': token
+    }})
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
 }

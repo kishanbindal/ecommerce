@@ -13,4 +13,4 @@ class OrderProductSerializer(ModelSerializer):
 
     class Meta:
         model = OrderProduct
-        fields = '__all__'
+        exclude = ['customer']
