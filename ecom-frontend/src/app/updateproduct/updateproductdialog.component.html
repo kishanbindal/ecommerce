@@ -16,5 +16,5 @@
 
 <input type="file" accept="image/*" (change)="getImageFile($event)">
 
-<button mat-button color="primary">Submit</button>
+<button mat-button color="primary" (click)="sendUpdateRequest()">Submit</button>
 <button mat-button mat-dialog-close color="warn">close</button> 

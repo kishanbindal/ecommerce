@@ -92,4 +92,17 @@ export class DataService {
     )
   }
 
+  updateProduct(data, product_id: number){
+    const token = localStorage.getItem('token')
+    let url = configUrl+`/api/products/${product_id}/`;
+    return this._http.put(url, data, {
+      headers:{
+        'token': token
+      }
+    })
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
 }

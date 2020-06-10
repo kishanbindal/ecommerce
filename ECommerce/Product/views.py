@@ -78,12 +78,31 @@ class SingleProductView(GenericAPIView):
                 status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, *args, **kwargs):
-        product_id = args[1].get('id')
-        serializer = ProductSerializer(data=request.data, partial=True)
 
-        if serializer.is_valid():
-            pass
-        pass
+        smd = {
+            'success': False,
+            'message': 'Unable to update Product Data',
+            'data': []
+        }
+        try:
+            pdb.set_trace()
+            product_id = kwargs['id']
+            if type(request.data.get('images')) is not str:
+                url = AwsServices().upload_img(request.data.get('images'), request.data.get('name'))
+                request.data['images'] = url
+            serializer = ProductSerializer(data=request.data, partial=True)
+            product = Product.objects.get(pk=product_id)
+
+            if serializer.is_valid():
+                serializer.update(product, serializer.validated_data)
+                smd['success'], smd['message'] = True, f'Successfully Updated {product.name}'
+                return Response(data=smd, status=status.HTTP_200_OK)
+            else:
+                smd['data'] = serializer.errors
+                return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
+
 
     @method_decorator(is_admin)
     def delete(self, request, *args, **kwargs):
