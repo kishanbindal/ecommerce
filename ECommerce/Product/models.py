@@ -20,7 +20,7 @@ class OrderProduct(models.Model):  # Each product is linked to a particular cust
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.CharField(max_length=2, blank=False)
-    subtotal = models.DecimalField(max_digits=7, decimal_places=2)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
     is_billed = models.BooleanField(default=False)
 
     def __str__(self):

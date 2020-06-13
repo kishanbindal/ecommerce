@@ -1,4 +1,6 @@
 from django.urls import reverse, resolve
+import pytest
+
 
 class TestProductUrls:
 

@@ -23,6 +23,9 @@ export class DataService {
 
   private productIdSource = new BehaviorSubject('No Product to Show');
   public productIdItem = this.productIdSource.asObservable();
+
+  private cartSource = new BehaviorSubject('Cart is Empty');
+  public cartData = this.cartSource.asObservable();
   
   constructor(private _http: HttpClient, private _snackbar: MatSnackBar) {}
 
@@ -115,6 +118,22 @@ export class DataService {
     .pipe(
       catchError(this.handleError)
     )
+  }
+
+  getCart(){
+    const token = localStorage.getItem('token')
+    let url = configUrl+'/api/cart/'
+    this._http.get(url, { headers :{
+      'token': token
+    }})
+    .pipe(
+      catchError(this.handleError)
+    )
+    .subscribe(response => {
+      if (response['success'] === true){
+        this.cartSource.next(response['data'])
+      }
+    })
   }
 
 }

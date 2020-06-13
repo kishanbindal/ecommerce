@@ -9,6 +9,7 @@ import { DataService } from '../services/data-service.service';
 export class AddbuttonComponent implements OnInit {
 
   @Input() product
+  ordered_product = null
 
   constructor(private ds: DataService) { }
 
@@ -22,7 +23,11 @@ export class AddbuttonComponent implements OnInit {
       'subtotal': this.product.price,
       'is_billed': false
     }
-    this.ds.addOrderItem(data).subscribe(response => console.log(response))
+    this.ds.addOrderItem(data).subscribe(response => {
+      if (response['success'] === true){
+        this.ordered_product = response['data'][0]
+      }
+    })
   }
 
 }

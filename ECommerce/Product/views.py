@@ -6,8 +6,10 @@ from rest_framework import status
 from services.aws_services import AwsServices
 from services.auth import logged_in, is_admin
 from services.token_service import TokenService
-from .models import Product
+from .models import Product, OrderProduct
 from .serializers import ProductSerializer, OrderProductSerializer
+from Cart.models import Cart
+from Users.models import User
 import pdb
 
 # Create your views here.
@@ -36,7 +38,6 @@ class ProductsView(GenericAPIView):
         # else:
 
         # if serializer.is_valid():
-        pdb.set_trace()
         if request.data.get('images') is not None:
             img_file = request.data.get('images')
             url = AwsServices().upload_img(img_file, request.data.get('name'))
@@ -144,6 +145,15 @@ class OrderView(GenericAPIView):
             serializer = OrderProductSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save(customer_id=user_id)
+                ordered_product = OrderProduct.objects.get(customer_id=user_id, product_id=serializer.validated_data.get('product'),
+                                                           is_billed=False)
+                if Cart.objects.filter(customer_id=user_id, order_placed=False).exists() is True:
+                    print('Nothing Occurs Here')
+                else:
+                    user = User.objects.get(pk=user_id)
+                    cart = Cart(customer=user, order_placed=False, total_amount=ordered_product.subtotal)
+                    cart.save()
+                    cart.items.add(ordered_product)
                 smd['success'], smd['message'] = True, 'Successfully created Order Item'
                 return Response(data=smd, status=status.HTTP_200_OK)
             else:

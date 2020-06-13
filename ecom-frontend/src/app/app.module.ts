@@ -39,6 +39,8 @@ import { UpdateproductComponent, UpdateProductDialogComponent } from './updatepr
 import { OpbuttonComponent } from './opbutton/opbutton.component';
 import { AddbuttonComponent } from './addbutton/addbutton.component';
 import { ReducebuttonComponent } from './reducebutton/reducebutton.component';
+import { AddtocartComponent } from './addtocart/addtocart.component';
+import { CartbuttonComponent, CartbuttonDialogComponent } from './cartbutton/cartbutton.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,9 @@ import { ReducebuttonComponent } from './reducebutton/reducebutton.component';
     OpbuttonComponent,
     AddbuttonComponent,
     ReducebuttonComponent,
+    AddtocartComponent,
+    CartbuttonComponent,
+    CartbuttonDialogComponent,
   ],
   imports: [
     AppRoutingModule,
