@@ -139,6 +139,31 @@ export class DataService {
     })
   }
 
+  updateOrderItem(order_id, data){
+    const token = localStorage.getItem('token')
+    let url = configUrl+`/api/order/${order_id}`;
+    this._http.patch(url, data, {headers:{
+      'token': token
+    }})
+    .pipe(
+      catchError(this.handleError)
+    )
+    .subscribe(response => {
+      console.log(response)
+      if (response['success'] === true){
+        this.getOrderItems()
+      }
+    })
+  }
+
+  deleteOrderItem(order_id){
+    const token = localStorage.getItem('token')
+    let url = configUrl + `/api/order/${order_id}`;
+    return this._http.delete(url, {headers: {
+      'token': token
+    }})
+  }
+
   getCart(){
     const token = localStorage.getItem('token')
     let url = configUrl+'/api/cart/'

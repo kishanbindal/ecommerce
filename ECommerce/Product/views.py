@@ -185,6 +185,34 @@ class OrderView(GenericAPIView):
             # smd['data'] =
             return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, id):
-        pass
 
+class OrderOperationsView(GenericAPIView):
+
+    def patch(self, request, *args, **kwargs):
+        smd = {
+            'success': False,
+            'message': f'Unsuccessful in updating product',
+            'data': []
+        }
+
+        try:
+            # pdb.set_trace()
+            serializer = OrderProductSerializer(data=request.data, partial=True)
+            if serializer.is_valid():
+                order = OrderProduct.objects.get(pk=kwargs.get('id'))
+                serializer.update(order, serializer.validated_data)
+                smd['success'], smd['message'] = True, f"Successfully updated order with id : {kwargs['id']}"
+                return Response(data=smd, status=status.HTTP_200_OK)
+        except Exception as e:
+            pass
+
+    def delete(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+        smd = {
+            'success': False,
+            'message': f'Unsuccessful in deleting order with ID : {id}'
+        }
+
+        try:
+            pass
+        pass

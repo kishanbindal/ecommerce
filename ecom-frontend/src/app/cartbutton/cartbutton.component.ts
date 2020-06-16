@@ -55,4 +55,8 @@ export class CartbuttonDialogComponent implements OnInit{
       console.log(this.cart_products)
     }, 600)
   }
+
+  handleQuantChange($event){
+    console.log($event)
+  }
 }

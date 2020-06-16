@@ -1,3 +1,6 @@
-<app-addbutton [product]="product" [quantity]="quantity"></app-addbutton>
+<button mat-button (click)="addProductQuantity()"><mat-icon>add</mat-icon></button>
 {{quantity}}
-<app-reducebutton></app-reducebutton>
+<button mat-button (click)="reduceProductQuantity()"><mat-icon>remove</mat-icon></button>
+
+
+<button mat-button (click)="removeOrderItem()"><mat-icon>delete</mat-icon></button>
