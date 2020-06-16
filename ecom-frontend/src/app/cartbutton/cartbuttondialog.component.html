@@ -1,0 +1,12 @@
+
+
+<div *ngFor="let product of cart_products">
+    <mat-card>
+        <mat-card-title>
+            {{product.product['name']}}
+        </mat-card-title>
+        <mat-label>Quantity : </mat-label>
+        <mat-card-subtitle>{{product.quantity}}</mat-card-subtitle>
+        <app-opbutton [product]="product.product" [quantity]="product.quantity"></app-opbutton>
+    </mat-card>
+</div>

@@ -6,6 +6,8 @@ from rest_framework import status
 from services.auth import logged_in
 from services.token_service import TokenService
 from .models import Cart
+from .serializer import CartViewSerializer
+import pdb
 
 
 class CartView(GenericAPIView):
@@ -17,15 +19,15 @@ class CartView(GenericAPIView):
             'message': 'Successfully retrieved Cart',
             'data': []
         }
-        import pdb
-        pdb.set_trace()
-        token = request.headers.get('token')
-        payload = TokenService().decode_token(token)
-        user_id = payload.get('id')
+        # pdb.set_trace()
         try:
+            token = request.headers.get('token')
+            payload = TokenService().decode_token(token)
+            user_id = payload.get('id')
             cart = Cart.objects.get(customer_id=user_id, order_placed=False)
             if cart is not None:
-                smd['data'] = cart.
+                serializer = CartViewSerializer(cart)
+                smd['data'] = serializer.data
                 return Response(data=smd, status=status.HTTP_200_OK)
         except Exception:
             pass

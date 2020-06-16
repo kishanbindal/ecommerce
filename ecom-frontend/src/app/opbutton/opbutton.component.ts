@@ -9,6 +9,7 @@ import { DataService } from '../services/data-service.service';
 export class OpbuttonComponent implements OnInit {
 
   @Input() product
+  @Input() quantity
 
   constructor(private ds: DataService) { }
 

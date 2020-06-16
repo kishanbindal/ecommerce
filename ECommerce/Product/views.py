@@ -60,6 +60,7 @@ class SingleProductView(GenericAPIView):
     # @logged_in
     def get(self, request, *args, **kwargs):
         try:
+            pdb.set_trace()
             id = kwargs.get('id')
             product = Product.objects.get(pk=id)
             serializer = ProductSerializer(product)
@@ -73,7 +74,7 @@ class SingleProductView(GenericAPIView):
             return Response(data={
                 'success': False,
                 'message:': 'Could Not Retrieve Data',
-                'data': f"Product with ID={args[1].get('id')} Does not Exist"
+                'data': f"Product with ID={kwargs.get('id')} Does not Exist"
                  },
                 status=status.HTTP_400_BAD_REQUEST)
 
@@ -129,6 +130,26 @@ class OrderView(GenericAPIView):
 
     serializer_class = OrderProductSerializer
 
+    def get(self, request, *args, **kwargs):
+
+        smd = {
+            'success': False,
+            'message': 'Unsuccessful in retrieving orders of user',
+            'data': []
+        }
+        try:
+            # pdb.set_trace()
+            token = request.headers.get('token')
+            payload = TokenService().decode_token(token)
+            user_id = payload.get('id')
+            orders = OrderProduct.objects.filter(customer_id=user_id, is_billed=False)
+            serializer = OrderProductSerializer(orders, many=True)
+            smd['success'], smd['message'], smd['data'] = True, f'Successfully retrieved all order items of user ' \
+                                                                f'{user_id}', serializer.data
+            return Response(data=smd, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
+
     @method_decorator(logged_in)
     def post(self, request, *args, **kwargs):
 
@@ -138,7 +159,6 @@ class OrderView(GenericAPIView):
             'data': []
         }
         try:
-            pdb.set_trace()
             token = request.headers.get('token')
             payload = TokenService().decode_token(token)
             user_id = payload.get('id')
@@ -148,7 +168,9 @@ class OrderView(GenericAPIView):
                 ordered_product = OrderProduct.objects.get(customer_id=user_id, product_id=serializer.validated_data.get('product'),
                                                            is_billed=False)
                 if Cart.objects.filter(customer_id=user_id, order_placed=False).exists() is True:
-                    print('Nothing Occurs Here')
+                    cart = Cart.objects.get(customer_id=user_id, order_placed=False)
+                    cart.items.add(ordered_product)
+                    cart.save()
                 else:
                     user = User.objects.get(pk=user_id)
                     cart = Cart(customer=user, order_placed=False, total_amount=ordered_product.subtotal)

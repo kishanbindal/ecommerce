@@ -9,7 +9,7 @@ import { DataService } from '../services/data-service.service';
 export class AddbuttonComponent implements OnInit {
 
   @Input() product
-  ordered_product = null
+  @Input() quantity
 
   constructor(private ds: DataService) { }
 
@@ -25,7 +25,6 @@ export class AddbuttonComponent implements OnInit {
     }
     this.ds.addOrderItem(data).subscribe(response => {
       if (response['success'] === true){
-        this.ordered_product = response['data'][0]
       }
     })
   }
