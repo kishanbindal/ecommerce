@@ -19,7 +19,7 @@ class CartView(GenericAPIView):
             'message': 'Successfully retrieved Cart',
             'data': []
         }
-        pdb.set_trace()
+        # pdb.set_trace()
         try:
             token = request.headers.get('token')
             payload = TokenService().decode_token(token)

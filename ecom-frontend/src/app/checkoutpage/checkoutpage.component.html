@@ -1,1 +1,22 @@
-<p>checkoutpage works!</p>
+<div>
+    <mat-list>
+        <!-- <mat-list-item > -->
+            <mat-card *ngFor="let item of cart.items">
+                <mat-card-title>{{item.product.name}}</mat-card-title>
+                <mat-card-content>
+                    Quantity :{{item.quantity}}
+                    <br>    
+                    <app-opbutton [product]="item" [quantity]="item.quantity"></app-opbutton>
+                </mat-card-content>
+                <mat-card-footer>Subtotal : {{item.subtotal}}</mat-card-footer>
+            </mat-card>
+        <!-- </mat-list-item> -->
+    </mat-list>
+    <p>Total : {{cart.total_amount}}</p>
+</div>
+
+<button mat-button color="primary" *ngIf="cart.address == '';else changeAddress"> Add Delivery Address </button>
+
+<ng-template #changeAddress>
+    <button mat-button color="primary">Change Address</button>
+</ng-template>

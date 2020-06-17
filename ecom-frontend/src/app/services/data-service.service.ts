@@ -152,6 +152,7 @@ export class DataService {
       console.log(response)
       if (response['success'] === true){
         this.getOrderItems()
+        this.getCart()
       }
     })
   }

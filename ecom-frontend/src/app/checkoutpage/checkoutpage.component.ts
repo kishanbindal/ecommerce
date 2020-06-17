@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from '../services/data-service.service';
 
 @Component({
   selector: 'app-checkoutpage',
@@ -7,9 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutpageComponent implements OnInit {
 
-  constructor() { }
+  cart
+
+  constructor(private ds: DataService) { }
 
   ngOnInit(): void {
+    this.ds.getCart()
+    this.ds.cartData.subscribe(data => {
+      this.cart = data
+    })
+    setTimeout(()=> {
+      console.log(this.cart);
+      var total = 0
+      for (const item of this.cart.items) {
+        console.log(item)
+        total += Number(item['subtotal'])
+      }
+      this.cart.total_amount = total
+    }, 150)
   }
 
 }

@@ -191,7 +191,7 @@ class OrderView(GenericAPIView):
 
 class OrderOperationsView(GenericAPIView):
 
-    @method_decorator(logged_in)
+    @method_decorator(logged_in, name='dispatch')
     def patch(self, request, *args, **kwargs):
         smd = {
             'success': False,
@@ -200,7 +200,7 @@ class OrderOperationsView(GenericAPIView):
         }
 
         try:
-            # pdb.set_trace()
+            pdb.set_trace()
             serializer = OrderProductSerializer(data=request.data, partial=True)
             if serializer.is_valid():
                 order = OrderProduct.objects.get(pk=args[1].get('id'))
