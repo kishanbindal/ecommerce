@@ -7,7 +7,7 @@ from Users.models import User
 class Product(models.Model):  # Product Inventory which only admin can access
 
     name = models.CharField(max_length=32, blank=False)
-    images = models.URLField(blank=True, null=True)
+    images = models.URLField(max_length=2048, blank=True, null=True)
     quantity = models.CharField(max_length=6, blank=False)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False)
 

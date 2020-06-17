@@ -5,8 +5,10 @@
         <mat-card-title>
             {{product.product['name']}}
         </mat-card-title>
-        <mat-label>Quantity : </mat-label>
-        <mat-card-subtitle>{{product.quantity}}</mat-card-subtitle>
+        <mat-label>Subtotal : </mat-label>
+        <mat-card-subtitle>{{product.subtotal}}</mat-card-subtitle>
         <app-opbutton [product]="product" [quantity]="product.quantity" (updatedQuantity)="handleQuantChange($event)"></app-opbutton>
     </mat-card>
 </div>
+
+<button mat-button [routerLink]="'/checkout'" mat-dialog-close color="primary">Checkout</button>

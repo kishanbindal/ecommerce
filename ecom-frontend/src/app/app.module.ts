@@ -41,6 +41,7 @@ import { AddbuttonComponent } from './addbutton/addbutton.component';
 import { ReducebuttonComponent } from './reducebutton/reducebutton.component';
 import { AddtocartComponent } from './addtocart/addtocart.component';
 import { CartbuttonComponent, CartbuttonDialogComponent } from './cartbutton/cartbutton.component';
+import { CheckoutpageComponent } from './checkoutpage/checkoutpage.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { CartbuttonComponent, CartbuttonDialogComponent } from './cartbutton/car
     AddtocartComponent,
     CartbuttonComponent,
     CartbuttonDialogComponent,
+    CheckoutpageComponent,
   ],
   imports: [
     AppRoutingModule,

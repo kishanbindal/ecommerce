@@ -45,6 +45,9 @@ export class OpbuttonComponent implements OnInit {
   removeOrderItem(){
     this.ds.deleteOrderItem(this.product.id).subscribe(response => {
       console.log(response)
+      if (response['success'] === true) {
+        this.ds.getCart()
+      }
     })
   }
 

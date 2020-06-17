@@ -13,6 +13,7 @@ def logged_in(func=None):
     @wraps(func)
     def func_decorator(request, *args, **kwargs):
         try:
+            # pdb.set_trace()
             token = request.headers.get('token')
             if token is None:
                 raise ValueError('Token Cannot be empty')

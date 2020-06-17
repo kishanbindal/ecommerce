@@ -7,7 +7,7 @@ from services.aws_services import AwsServices
 from services.auth import logged_in, is_admin
 from services.token_service import TokenService
 from .models import Product, OrderProduct
-from .serializers import ProductSerializer, OrderProductSerializer
+from .serializers import ProductSerializer, OrderProductSerializer, OrderSerializer
 from Cart.models import Cart
 from Users.models import User
 import pdb
@@ -41,6 +41,7 @@ class ProductsView(GenericAPIView):
         if request.data.get('images') is not None:
             img_file = request.data.get('images')
             url = AwsServices().upload_img(img_file, request.data.get('name'))
+            url = AwsServices().get_presigned_url(request.data.get('name'))
             serializer.initial_data['images'] = url
         if serializer.is_valid():
             serializer.save()
@@ -130,6 +131,7 @@ class OrderView(GenericAPIView):
 
     serializer_class = OrderProductSerializer
 
+    @method_decorator(logged_in, name='dispatch')
     def get(self, request, *args, **kwargs):
 
         smd = {
@@ -143,14 +145,14 @@ class OrderView(GenericAPIView):
             payload = TokenService().decode_token(token)
             user_id = payload.get('id')
             orders = OrderProduct.objects.filter(customer_id=user_id, is_billed=False)
-            serializer = OrderProductSerializer(orders, many=True)
+            serializer = OrderSerializer(orders, many=True)
             smd['success'], smd['message'], smd['data'] = True, f'Successfully retrieved all order items of user ' \
                                                                 f'{user_id}', serializer.data
             return Response(data=smd, status=status.HTTP_200_OK)
         except Exception:
             return Response(data=smd, status=status.HTTP_400_BAD_REQUEST)
 
-    @method_decorator(logged_in)
+    # @method_decorator(logged_in)
     def post(self, request, *args, **kwargs):
 
         smd = {
@@ -159,6 +161,7 @@ class OrderView(GenericAPIView):
             'data': []
         }
         try:
+            pdb.set_trace()
             token = request.headers.get('token')
             payload = TokenService().decode_token(token)
             user_id = payload.get('id')
@@ -188,6 +191,7 @@ class OrderView(GenericAPIView):
 
 class OrderOperationsView(GenericAPIView):
 
+    @method_decorator(logged_in)
     def patch(self, request, *args, **kwargs):
         smd = {
             'success': False,
@@ -199,20 +203,26 @@ class OrderOperationsView(GenericAPIView):
             # pdb.set_trace()
             serializer = OrderProductSerializer(data=request.data, partial=True)
             if serializer.is_valid():
-                order = OrderProduct.objects.get(pk=kwargs.get('id'))
+                order = OrderProduct.objects.get(pk=args[1].get('id'))
                 serializer.update(order, serializer.validated_data)
-                smd['success'], smd['message'] = True, f"Successfully updated order with id : {kwargs['id']}"
+                smd['success'], smd['message'] = True, f"Successfully updated order with id : {args[1].get('id')}"
                 return Response(data=smd, status=status.HTTP_200_OK)
         except Exception as e:
             pass
 
+    @method_decorator(logged_in)
     def delete(self, request, *args, **kwargs):
-        id = kwargs.get('id')
+
+        pdb.set_trace()
+        id = args[1].get('id')
         smd = {
             'success': False,
             'message': f'Unsuccessful in deleting order with ID : {id}'
         }
 
         try:
+            OrderProduct.objects.get(pk=id).delete()
+            smd['success'], smd['message'] = True, f'Successfully deleted order with id : {id}'
+            return Response(data=smd, status=status.HTTP_200_OK)
+        except Exception as e:
             pass
-        pass

@@ -143,7 +143,7 @@ export class DataService {
     const token = localStorage.getItem('token')
     let url = configUrl+`/api/order/${order_id}`;
     this._http.patch(url, data, {headers:{
-      'token': token
+      'token': token,
     }})
     .pipe(
       catchError(this.handleError)
@@ -160,7 +160,7 @@ export class DataService {
     const token = localStorage.getItem('token')
     let url = configUrl + `/api/order/${order_id}`;
     return this._http.delete(url, {headers: {
-      'token': token
+      'token': token,
     }})
   }
 
@@ -168,7 +168,7 @@ export class DataService {
     const token = localStorage.getItem('token')
     let url = configUrl+'/api/cart/'
     this._http.get(url, { headers :{
-      'token': token
+      'token': token,
     }})
     .pipe(
       catchError(this.handleError)

@@ -11,6 +11,15 @@ class ProductSerializer(ModelSerializer):
 
 class OrderProductSerializer(ModelSerializer):
 
+    # product = ProductSerializer(read_only=True)
+
+    class Meta:
+        model = OrderProduct
+        exclude = ['customer']
+
+
+class OrderSerializer(ModelSerializer):
+
     product = ProductSerializer(read_only=True)
 
     class Meta:
