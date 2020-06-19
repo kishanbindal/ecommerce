@@ -10,3 +10,4 @@ class CartViewSerializer(ModelSerializer):
     class Meta:
         model = Cart
         fields = "__all__"
+

@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 const configUrl = 'http://127.0.0.1:8000'
+const token = localStorage.getItem('token')
 
 export interface Product{
   name: string,
@@ -179,6 +180,17 @@ export class DataService {
         this.cartSource.next(response['data'])
       }
     })
+  }
+
+  updateCart(cart_id:number, uploadData){
+    var url = configUrl+ `/api/cart/${cart_id}/`;
+    return this._http.patch(url, uploadData, { headers: {
+      'token': token
+    }})
+    .pipe(
+      catchError(this.handleError)
+    )
+
   }
 
 }

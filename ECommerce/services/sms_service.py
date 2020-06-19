@@ -36,6 +36,21 @@ class SmsService:
         else:
             raise ValueError('Text Message was not created')
 
+    def send_order_placed_sms(self, user, cart):
+        import pdb
+        pdb.set_trace()
+        body = f"Hello {user.first_name}.\nYour Order with order number : {cart.id} has been placed successfully" \
+               f"and will be Delivered to \n {cart.address}"
+        message = self.client.messages.create(
+            to=user.phone_number,
+            from_=str(os.getenv('number')),
+            body=body
+        )
+        if message.sid is not None:
+            print(message.sid)
+        else:
+            raise ValueError('Text Message was not created')
+
 
 class OtpService:
 

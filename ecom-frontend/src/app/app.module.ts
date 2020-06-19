@@ -42,6 +42,7 @@ import { ReducebuttonComponent } from './reducebutton/reducebutton.component';
 import { AddtocartComponent } from './addtocart/addtocart.component';
 import { CartbuttonComponent, CartbuttonDialogComponent } from './cartbutton/cartbutton.component';
 import { CheckoutpageComponent } from './checkoutpage/checkoutpage.component';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { CheckoutpageComponent } from './checkoutpage/checkoutpage.component';
     DataService,
     LoginService,
     LogoutService,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
   ],
   bootstrap: [AppComponent]
 })

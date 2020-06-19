@@ -15,8 +15,53 @@
     <p>Total : {{cart.total_amount}}</p>
 </div>
 
-<button mat-button color="primary" *ngIf="cart.address == '';else changeAddress"> Add Delivery Address </button>
+<hr>
+
+<div *ngIf="cart.address == '';else changeAddress">
+    <mat-label>No Address Records. Please Update Address: </mat-label><br>
+
+<mat-form-field>
+    <textarea matInput placeholder="Flat/Plot Number" [formControl]="address1" required></textarea>
+</mat-form-field>
+
+<mat-form-field>
+    <textarea matInput placeholder="Locality" [formControl]="address2" required></textarea>
+</mat-form-field>
+
+<table>
+    <tr>
+        <td>
+            <mat-form-field>
+                <input matInput type="text" placeholder="City" [formControl]="city" required>
+            </mat-form-field>
+        </td>
+    
+        <td>
+            <mat-form-field>
+                <input matInput type="text" placeholder="State" [formControl]="state" required>
+            </mat-form-field>
+        </td>
+    </tr>
+
+    <tr>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Country" [formControl]="country" required>
+        </mat-form-field>
+    </tr>
+</table>
+
+<button mat-button color="primary" *ngIf="cart.address == '';else changeAddress" (click)="updateAddress()"> Update Delivery Address </button>
+
+</div>
+
 
 <ng-template #changeAddress>
-    <button mat-button color="primary">Change Address</button>
+    <mat-label>Address: </mat-label>
+    <div>
+        {{ cart.address}}
+    </div>
+    <button mat-button>Change Address</button>
+
+    <br>
+    <button mat-button color="primary" (click)="placeOrder()"> Place Order</button>
 </ng-template>

@@ -61,7 +61,7 @@ class SingleProductView(GenericAPIView):
     # @logged_in
     def get(self, request, *args, **kwargs):
         try:
-            pdb.set_trace()
+            # pdb.set_trace()
             id = kwargs.get('id')
             product = Product.objects.get(pk=id)
             serializer = ProductSerializer(product)
@@ -200,7 +200,7 @@ class OrderOperationsView(GenericAPIView):
         }
 
         try:
-            pdb.set_trace()
+            # pdb.set_trace()
             serializer = OrderProductSerializer(data=request.data, partial=True)
             if serializer.is_valid():
                 order = OrderProduct.objects.get(pk=args[1].get('id'))
